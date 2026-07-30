@@ -45,7 +45,7 @@ export function wrap<T extends IRequestOptions>(options: T): T {
         }
     }
 
-    function requestSuccess(res: { header: Record<string, string>; headers?: Record<string, string>; cookies?: string[] }) {
+    function requestSuccess(res: { header: Record<string, string>; headers?: object; cookies?: string[] }) {
         if (!(res && typeof res === "object")) return;
 
         let headers: Record<string, string> = res.header || res.headers || {};
