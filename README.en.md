@@ -13,7 +13,7 @@ npm install miniprogram-cookie-shim
 ```javascript
 import { Cookie, setBaseURL, wrap } from "miniprogram-cookie-shim";
 
-setBaseURL("https://example.com"); // Set base URL for cookie domain matching
+setBaseURL("https://api.example.com"); // Set base URL for cookie domain matching
 
 // Read and write cookies
 Cookie.set("token=abc123; Max-Age=3600; Path=/");

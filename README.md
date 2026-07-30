@@ -15,7 +15,7 @@ npm install miniprogram-cookie-shim
 ```javascript
 import { Cookie, setBaseURL, wrap } from "miniprogram-cookie-shim";
 
-setBaseURL("https://example.com"); // 设置基准 URL，用于 Cookie 的域匹配
+setBaseURL("https://api.example.com"); // 设置基准 URL，用于 Cookie 的域匹配
 
 // 读写 Cookie
 Cookie.set("token=abc123; Max-Age=3600; Path=/");
