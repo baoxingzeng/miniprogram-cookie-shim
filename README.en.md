@@ -11,27 +11,25 @@ npm install miniprogram-cookie-shim
 ## Quick Start
 
 ```javascript
-import { Cookie, createAccessor } from "miniprogram-cookie-shim";
+import { Cookie, setBaseURL, wrap } from "miniprogram-cookie-shim";
 
-const accessor = createAccessor("https://api.example.com");
+setBaseURL("https://example.com"); // Set base URL for cookie domain matching
 
 // Read and write cookies
 Cookie.set("token=abc123; Max-Age=3600; Path=/");
 console.log(Cookie.get()); // "token=abc123"
 
-// Inject cookies into requests, save Set-Cookie on response
-wx.request({
+// request is just an example, replace with your platform's actual method
+// e.g., WeChat uses wx.request, Alipay uses my.request, etc.
+// wrap() automatically sends cookies with requests and stores Set-Cookie from responses
+request(wrap({
     url: "https://api.example.com/user",
-    header: {
-        Cookie: accessor.get("https://api.example.com/user", true),
-    },
+    withCredentials: true, // enable for cross-origin requests
     success(res) {
-        accessor.set("https://api.example.com/user", true, res.cookies || res.header["set-cookie"]);
+        console.log(res.data);
     },
-});
+}));
 ```
-
-> **Note**: Mini program APIs vary across platforms. The `wx.request` above is for illustration only. Consult your platform's documentation for the actual request method name, parameter format, and response fields.
 
 ## API
 
@@ -46,6 +44,14 @@ wx.request({
 | -------------------------- | ------------------------------------------------------------------------ |
 | `Cookie.get()`             | Returns all cookies for the current domain (`name=value; ...`)           |
 | `Cookie.set(cookieString)` | Sets a cookie. Supports `Max-Age`, `Expires`, `Path`, `Domain`, and more |
+
+### `setBaseURL(url)`
+
+Sets the global base URL used for cookie domain and path matching. Can be called multiple times.
+
+| Parameter | Type     | Description        |
+| --------- | -------- | ------------------ |
+| `url`     | `string` | A valid URL string |
 
 ### `createAccessor(baseURL?)`
 
@@ -63,14 +69,6 @@ Returns:
 | `set`  | `(url: string, withCredentials?: boolean, cookies?: string \| string[]) => void` | Persists response cookies based on the request URL |
 
 > When `withCredentials` is `true`, cross-origin cookies are allowed; same-origin requests are unaffected by this parameter.
-
-### `setBaseURL(url)`
-
-Sets the global base URL used for cookie domain and path matching. Can be called multiple times.
-
-| Parameter | Type     | Description        |
-| --------- | -------- | ------------------ |
-| `url`     | `string` | A valid URL string |
 
 ## License
 

@@ -13,27 +13,25 @@ npm install miniprogram-cookie-shim
 ## 快速开始
 
 ```javascript
-import { Cookie, setBaseURL, createAccessor } from "miniprogram-cookie-shim";
+import { Cookie, setBaseURL, wrap } from "miniprogram-cookie-shim";
 
-const accessor = createAccessor("https://api.example.com");
+setBaseURL("https://example.com"); // 设置基准 URL，用于 Cookie 的域匹配
 
 // 读写 Cookie
 Cookie.set("token=abc123; Max-Age=3600; Path=/");
 console.log(Cookie.get()); // "token=abc123"
 
-// 请求时注入 Cookie，响应后保存 Set-Cookie
-wx.request({
+// request 仅作示例，实际请用对应平台的方法
+// 例如微信小程序用 wx.request，支付宝小程序用 my.request 等
+// wrap() 会在请求时自动携带 Cookie，响应时自动解析 Set-Cookie 并存储
+request(wrap({
     url: "https://api.example.com/user",
-    header: {
-        Cookie: accessor.get("https://api.example.com/user", true),
-    },
+    withCredentials: true, // 跨域请求需要开启
     success(res) {
-        accessor.set("https://api.example.com/user", true, res.cookies || res.header["set-cookie"]);
+        console.log(res.data);
     },
-});
+}));
 ```
-
-> **注意**：各小程序平台的 API 存在差异，示例中的 `wx.request` 仅用于示意。实际使用时，请根据你所使用的平台文档进行调整，请求方法名、参数格式、响应字段等都可能有所不同。
 
 ## API
 
@@ -48,6 +46,14 @@ wx.request({
 | -------------------------- | ------------------------------------------------------------------- |
 | `Cookie.get()`             | 返回当前域名可用的所有 Cookie（格式：`name=value; ...`）            |
 | `Cookie.set(cookieString)` | 写入一个 Cookie，支持 `Max-Age`、`Expires`、`Path`、`Domain` 等属性 |
+
+### `setBaseURL(url)`
+
+设置全局基准 URL，用于 Cookie 的域匹配和路径匹配，可多次调用。
+
+| 参数  | 类型     | 说明              |
+| ----- | -------- | ----------------- |
+| `url` | `string` | 有效的 URL 字符串 |
 
 ### `createAccessor(baseURL?)`
 
@@ -65,14 +71,6 @@ wx.request({
 | `set` | `(url: string, withCredentials?: boolean, cookies?: string \| string[]) => void` | 根据 URL 将响应的 Cookie 写入存储 |
 
 > `withCredentials` 为 `true` 时，允许跨域请求携带 Cookie；同源请求不受此参数影响。
-
-### `setBaseURL(url)`
-
-设置全局基准 URL，用于 Cookie 的域匹配和路径匹配，可多次调用。
-
-| 参数  | 类型     | 说明              |
-| ----- | -------- | ----------------- |
-| `url` | `string` | 有效的 URL 字符串 |
 
 ## 开源协议
 
