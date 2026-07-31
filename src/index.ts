@@ -1,2 +1,2 @@
-export { Cookie, setBaseURL, createAccessor } from "./Cookie";
+export { Cookie, setBaseURL, createAccessor, setPlatform } from "./Cookie";
 export { wrap } from "./wrap";

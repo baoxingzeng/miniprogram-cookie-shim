@@ -3,15 +3,21 @@ import validUrl from "valid-url";
 import { getPlatform } from "miniprogram-platform";
 import { parseSetCookie, type Cookie as TCookie } from "set-cookie-parser";
 
-const platform = /*#__PURE__*/getPlatform() as {
-    name: string;
-    mp: {
-        getStorageSync: (key: string) => unknown;
-        setStorage: (value: { key: string; data: string }) => void;
-    };
-};
+const platform = {
+    value: /*#__PURE__*/getPlatform() as {
+        name: string;
+        mp: {
+            getStorageSync: (key: string) => unknown;
+            setStorage: (value: { key: string; data: string }) => void;
+        };
+    },
+}
 
-const webSite = /*#__PURE__*/function () { return { url: new Url("https://example.com") }; }();
+export function setPlatform(value: { name: string; mp: unknown; }) {
+    platform.value = value as typeof platform["value"];
+}
+
+const webSite = { url: /*#__PURE__*/function () { return new Url("https://example.com"); }() };
 const storage = { value: null as null | CookieStorage };
 
 class CookieStorage {
@@ -24,14 +30,14 @@ class CookieStorage {
     get storageKey() { return "__COOKIE_MPHTTPX__"; }
 
     restore() {
-        if (!platform) return;
+        if (!platform.value) return;
 
         let cookies = ((function (this: CookieStorage) {
             try {
-                let data: string = (platform.name !== "Alipay" && platform.name !== "DingTalk")
-                    ? platform.mp.getStorageSync(this.storageKey)
+                let data: string = (platform.value.name !== "Alipay" && platform.value.name !== "DingTalk")
+                    ? platform.value.mp.getStorageSync(this.storageKey)
                     // @ts-ignore
-                    : platform.mp.getStorageSync({ key: this.storageKey }).data;    // Alipay Mini Program
+                    : platform.value.mp.getStorageSync({ key: this.storageKey }).data;    // Alipay Mini Program
 
                 let parsed = data ? JSON.parse(data) as Array<TCookie & { _expires: number }> : [];
                 return Array.isArray(parsed) ? parsed : [];
@@ -52,7 +58,7 @@ class CookieStorage {
     }
 
     persist() {
-        if (!platform) return;
+        if (!platform.value) return;
 
         let cookies = this.cookies.filter(function (c) { return (c.expires && c.expires > (new Date())); }).map(function (c) {
             let copy: TCookie & { _expires?: number } = copyCookie(c);
@@ -60,7 +66,7 @@ class CookieStorage {
             return copy;
         });
 
-        platform.mp.setStorage({
+        platform.value.mp.setStorage({
             key: this.storageKey,
             data: JSON.stringify(cookies),
         });
