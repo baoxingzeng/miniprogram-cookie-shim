@@ -48,8 +48,11 @@
     "@rollup/plugin-typescript": "^12.3.0",
     "@types/url-parse": "^1.4.11",
     "@types/valid-url": "^1.0.7",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "rollup": "^4.62.3",
     "rollup-plugin-dts": "^6.4.1",
-    "tslib": "^2.8.1"
+    "tslib": "^2.8.1",
+    "uvu": "^0.5.6"
   }
 }
