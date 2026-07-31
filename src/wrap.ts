@@ -2,19 +2,19 @@ import { createAccessor } from "./Cookie";
 
 interface IRequestOptions {
     url: string;
-    header?: Record<string, string>;
-    headers?: Record<string, string>;
+    header?: object;
+    headers?: object;
     enableCookie?: boolean;
     withCredentials?: boolean;
-    success?: <T extends { header: Record<string, string> }>(res: T) => void;
-    fail?: (err: any) => void;
+    success?: Function;
+    fail?: Function;
 }
 
 const accessor = /*#__PURE__*/createAccessor();
 export function wrap<T extends IRequestOptions>(options: T): T {
     if (!(options && typeof options === "object")) return options;
 
-    let headers: Record<string, string> = options.header || options.headers || {};
+    let headers = (options.header || options.headers || {}) as Record<string, string>;
     if (typeof headers !== "object") { headers = {}; }
 
     let hasCookie = false;
@@ -45,10 +45,10 @@ export function wrap<T extends IRequestOptions>(options: T): T {
         }
     }
 
-    function requestSuccess(res: { header: Record<string, string>; headers?: object; cookies?: string[] }) {
+    function requestSuccess(res: { header?: object; headers?: object; cookies?: string[] }) {
         if (!(res && typeof res === "object")) return;
 
-        let headers: Record<string, string> = res.header || res.headers || {};
+        let headers = (res.header || res.headers || {}) as Record<string, string>;
         if (typeof headers !== "object") { headers = {}; }
 
         const names = Object.getOwnPropertyNames(headers);
@@ -78,7 +78,7 @@ export function wrap<T extends IRequestOptions>(options: T): T {
 
     if (!isNotExists("success")) {
         const _success = options.success!;
-        options.success = function (res) {
+        options.success = function (res: { header?: object }) {
             requestSuccess(res);
             if (typeof _success === "function") { _success.call(options, res); }
         }
@@ -88,7 +88,7 @@ export function wrap<T extends IRequestOptions>(options: T): T {
 
     if (!isNotExists("fail")) {
         const _fail = options.fail!;
-        options.fail = function (err) {
+        options.fail = function (err: any) {
             requestFail(err);
             if (typeof _fail === "function") { _fail.call(options, err); }
         }
