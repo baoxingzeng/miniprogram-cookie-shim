@@ -138,6 +138,51 @@ export default [
         ],
     },
 
+    // UMD (polyfill singlefile)
+    {
+        input: "src/polyfill.ts",
+        output: {
+            file: "dist/miniprogram-cookie-shim.umd.js",
+            format: "umd",
+            name: "MPCK",
+        },
+        plugins: [
+            typescript({
+                declarationDir: "dist/types",
+                moduleResolution: "bundler",
+            }),
+            commonjs(),
+            nodeResolve(),
+            babel({
+                babelHelpers: "bundled",
+                extensions: [".js", ".jsx", ".es6", ".es", ".mjs", ".ts", ".tsx"],
+            }),
+        ],
+    },
+
+    // UMD (polyfill singlefile, minimized)
+    {
+        input: "src/polyfill.ts",
+        output: {
+            file: "dist/miniprogram-cookie-shim.umd.min.js",
+            format: "umd",
+            name: "MPCK",
+        },
+        plugins: [
+            typescript({
+                declarationDir: "dist/types",
+                moduleResolution: "bundler",
+            }),
+            commonjs(),
+            nodeResolve(),
+            babel({
+                babelHelpers: "bundled",
+                extensions: [".js", ".jsx", ".es6", ".es", ".mjs", ".ts", ".tsx"],
+            }),
+            terser(),
+        ],
+    },
+
     // Types
     {
         input: "dist/esm/types/index.d.ts",

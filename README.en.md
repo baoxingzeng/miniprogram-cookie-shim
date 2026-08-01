@@ -15,7 +15,7 @@ import { Cookie, setBaseURL, wrap } from "miniprogram-cookie-shim";
 
 setBaseURL("https://api.example.com"); // Set base URL for cookie domain matching
 
-// Read and write cookies
+// Read and write cookies — same semantics as document.cookie getter/setter
 Cookie.set("token=abc123; Max-Age=3600; Path=/");
 console.log(Cookie.get()); // "token=abc123"
 

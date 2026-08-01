@@ -17,7 +17,7 @@ import { Cookie, setBaseURL, wrap } from "miniprogram-cookie-shim";
 
 setBaseURL("https://api.example.com"); // 设置基准 URL，用于 Cookie 的域匹配
 
-// 读写 Cookie
+// 读写 Cookie —— 与 document.cookie 的 getter/setter 语义一致
 Cookie.set("token=abc123; Max-Age=3600; Path=/");
 console.log(Cookie.get()); // "token=abc123"
 

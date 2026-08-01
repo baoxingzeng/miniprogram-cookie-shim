@@ -1,13 +1,15 @@
 {
   "name": "miniprogram-cookie-shim",
-  "version": "0.0.1",
+  "version": "0.9.0-beta",
   "license": "MIT",
   "author": "Xingzeng Bao",
   "homepage": "https://github.com/baoxingzeng/miniprogram-cookie-shim",
-  "description": "document.cookie-like cookie shim for mini programs. Plugin for miniprogram-xmlhttprequest-shim.",
+  "description": "A document.cookie-like cookie shim for mini programs. Plugin for miniprogram-xmlhttprequest-shim.",
   "type": "module",
   "main": "dist/miniprogram-cookie-shim.cjs.js",
   "module": "dist/miniprogram-cookie-shim.esm.js",
+  "unpkg": "dist/miniprogram-cookie-shim.umd.js",
+  "jsdelivr": "dist/miniprogram-cookie-shim.umd.js",
   "types": "dist/index.d.ts",
   "files": [
     "README.md",
@@ -26,14 +28,15 @@
   "sideEffects": false,
   "scripts": {
     "build": "rollup --config",
-    "test": "echo \"Tests are integrated in miniprogram-xmlhttprequest-shim.\" && exit 0"
+    "test": "echo \"Follow the instructions in tests/README.txt to run the tests.\" && exit 1"
   },
   "keywords": [
     "miniprogram",
-    "cookie"
+    "cookie",
+    "polyfill"
   ],
   "dependencies": {
-    "miniprogram-platform": ">=1.1.0",
+    "miniprogram-platform": "^1.1.9-beta",
     "set-cookie-parser": "^3.1.2",
     "url-parse": "^1.5.10",
     "valid-url": "^1.0.9"

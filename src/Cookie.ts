@@ -17,7 +17,7 @@ export function setPlatform(value: { name: string; mp: unknown; }) {
     platform.value = value as typeof platform["value"];
 }
 
-const webSite = { url: /*#__PURE__*/function () { return new Url("https://example.com"); }() };
+const webSite = { url: /*#__PURE__*/new Url("https://example.com") };
 const storage = { value: null as null | CookieStorage };
 
 class CookieStorage {

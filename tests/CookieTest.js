@@ -17,6 +17,7 @@ const test = (n, t) => {
 
 const platform = getPlatform();
 const mp = { request: platform.mp.request };
+export function setRequestFunc(request) { mp.request = request; }
 
 setBaseURL(testConfig.api_prefix);
 
