@@ -11,7 +11,7 @@ const platform = {
             setStorage: (value: { key: string; data: string }) => void;
         };
     },
-}
+};
 
 export function setPlatform(value: { name: string; mp: unknown; }) {
     platform.value = value as typeof platform["value"];
