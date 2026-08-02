@@ -34,7 +34,7 @@
     "miniprogram",
     "cookie",
     "polyfill",
-    "whchat",
+    "wechat",
     "request"
   ],
   "dependencies": {
