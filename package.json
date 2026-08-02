@@ -33,7 +33,9 @@
   "keywords": [
     "miniprogram",
     "cookie",
-    "polyfill"
+    "polyfill",
+    "whchat",
+    "request"
   ],
   "dependencies": {
     "miniprogram-platform": "^1.1.9-beta",

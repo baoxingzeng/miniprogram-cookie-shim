@@ -5,9 +5,7 @@ import express from "express";
 const app = express();
 app.use(cors());
 
-app.get("/ping", (req, res) => {
-    res.send("pong");
-});
+app.get("/ping", (req, res) => { res.send("pong"); });
 
 app.get("/api/cookie/set", (req, res) => {
     const { name, value } = req.query;
