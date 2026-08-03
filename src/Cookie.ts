@@ -142,6 +142,11 @@ class CookieStorage {
                 if (cookie.httpOnly) {
                     continue;
                 }
+
+                let c = findCookie(this.cookies, cookie);
+                if (c && c.httpOnly) {
+                    continue;
+                }
             }
 
             if (cookie.sameSite && cookie.sameSite.toLowerCase() === "none" && !cookie.secure) {
@@ -205,12 +210,18 @@ function isSameCookie(left: TCookie, right: TCookie) {
         && left.name === right.name;
 }
 
+function findCookie(array: TCookie[], value: TCookie) {
+    for (let i = 0; i < array.length; ++i) {
+        let item = array[i]!;
+        if (isSameCookie(item, value)) { return item; }
+    }
+}
+
 function copyCookie(source: TCookie) {
     let copy: TCookie = {
         name: source.name,
         value: source.value,
     };
-
     if (source.domain !== undefined) { copy.domain = source.domain; }
     if (source.path !== undefined) { copy.path = source.path; }
     if (source.expires !== undefined) { copy.expires = source.expires; }
@@ -218,7 +229,6 @@ function copyCookie(source: TCookie) {
     if (source.sameSite !== undefined) { copy.sameSite = source.sameSite; }
     if (source.httpOnly !== undefined) { copy.httpOnly = source.httpOnly; }
     if (source.partitioned !== undefined) { copy.partitioned = source.partitioned; }
-
     return copy;
 }
 
